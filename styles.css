@@ -1,6 +1,12 @@
 /* CSS for HTML page */
 * {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
 }
 
 ::-moz-selection { /* Code for Firefox */
@@ -13,27 +19,17 @@
   background: #d0d6d6;
 }
 
-body {
-    background-color: rgb(39, 39, 39);
-    margin:0px;
-    padding: 0px;
-}
-#particles-js {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    z-index: 0;
-    background-color: #041421;
-}
-
-p {
+p, table {
     font-size: 16px;
     font-family: "Roboto", 'Courier-new', monospace;
     font-weight: 300;
     font-style: thin;
     color: #d0d6d6;
+}
+
+table {
+    width: 100%;
+    text-align: center;
 }
 
 .links:link, .links:visited, .links:active {
@@ -45,6 +41,7 @@ p {
     text-decoration: none;
     transition: color 0.5s ease, background 0.5s ease;
 }
+
 .links:hover {
     color: transparent;
     background: linear-gradient(to left, #041421, #042630, #4c7273, #86b9b0, #d0d6d6, #86b9b0, #4c7273, #042630, #041421);
@@ -55,9 +52,19 @@ p {
     background-size:200%;
 }
 
-h1, h2 { 
+h1{ 
     color: #d0d6d6;
-    font-size: 60px;
+    font-size: 40px;
+    font-optical-sizing: auto;
+    font-family: "JetBrains Mono", 'Courier-new', monospace;
+    font-weight: 300;
+    font-style: thin;
+    margin:0 0 10px 0;
+}
+
+h2 {
+    color: #d0d6d6;
+    font-size: 30px;
     font-optical-sizing: auto;
     font-family: "JetBrains Mono", 'Courier-new', monospace;
     font-weight: 300;
@@ -66,22 +73,13 @@ h1, h2 {
 }
 
 hr {
-    margin: 10px auto;
+    margin: 20px auto;
     width: 90%;
     height: 2px;
     border: none;
     background: linear-gradient(to left, #041421, #042630, #4c7273, #86b9b0, #d0d6d6, #86b9b0, #4c7273, #042630, #041421);
     background-size: 200% auto;
     animation: slide 4s linear infinite;
-}
-
-@keyframes hue-rotate {
-    from {
-        filter: hue-rotate(0deg);
-    }
-    to {
-        filter: hue-rotate(360deg);
-    }
 }
 
 @keyframes slide {
@@ -97,112 +95,30 @@ hr {
     font-size:10px;
 }
 
-#bio {
-    width: 400px;
-    text-align: center;
-    letter-spacing: 0.8px;
+p, ul, ol, dl {
+    text-align: justify;
 }
 
-.aboutme {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-}
-
-@keyframes slide-in {
-    0% {
-        transform: translateY(-100%);
-    }
-    100% {
-        transform: translateY(0%);
-    }
-}
-
-#content {
-    width: 80%;
-    margin: 0 auto 0 auto;
-    padding: 20px 20px 0 20px;
-    text-align: center;
-    max-width:900px;
-    background-color: #061f33;
-    border-radius: 20px;
-    min-height:500px;
-    max-height: 97vh;
-    border: 1px dashed #d0d6d6;
-    border-top: none;
-    border-radius: 0 0 10px 10px;
-    color: #d0d6d6;
-    float: top;
-    position: relative;
-    overflow: auto;
-    z-index: 1;
-    animation: 0.9s cubic-bezier(0, 0, 0.48, 1) 0s 1 running slide-in;
+body {
+    background-color: #1a1a1a;
+    max-width: 800px;
+    padding: 20px;
+    line-height: 1.6;
     scrollbar-width: thin;
     scrollbar-color: #d0d6d6 transparent;
+    justify-content: center;
+    margin: 0 auto;
 }
 
-#profilepic {
-    border-radius:40px;
-    width:300px;
-    border: 2px solid #d0d6d6;
-}
-
-#projectimg {
-    height: 250px;
-    width: 250px;
-    object-fit:cover;
-}
-
-.projectcard {
-    display: grid;
-    border-radius: 1rem;
-    overflow: hidden;
-    cursor: pointer;
-    width: 250px;
-    height: 250px;
-    margin: auto;
-}
-
-.projectcard > * {
-  grid-area: 1/1;
-  transition: .2s;
-}
-.projectcard figcaption {
-    display: grid;
-    align-items: end;
-    font-family: sans-serif;
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #0000;
-    padding:10px;
-    background: var(--c,#0009);
-    clip-path: inset(0 var(--_i,100%) 0 0);
-    -webkit-mask:
-        linear-gradient(#000 0 0),
-        linear-gradient(#000 0 0);
-    mask:
-        linear-gradient(#000 0 0),
-        linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: xor;
-    -webkit-mask-clip: text, padding-box;
-    mask-clip: text, padding-box;
-    
-}
-.projectcard:hover figcaption{
-  --_i: 0%;
-}
-
-.projectcard:hover img {
-  transform: scale(1.2);
-}
-
-.projecttab {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 25px;
-    margin: auto;
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: auto; /* Allow interacting with the canvas */
+    will-change: transform; /* Force hardware acceleration */
+    transform: translateZ(0); /* Force GPU rendering */
+    backface-visibility: hidden; /* Helps with rendering on mobile devices */
 }
