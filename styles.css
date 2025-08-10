@@ -10,12 +10,12 @@ html {
 }
 
 ::-moz-selection { /* Code for Firefox */
-  color: #041421;
+  color: #1a1a1a;
   background: #d0d6d6;
 }
 
 ::selection {
-  color: #041421;
+  color: #1a1a1a;
   background: #d0d6d6;
 }
 
@@ -28,25 +28,38 @@ p, table {
 }
 
 table {
+    border-collapse: collapse;
     width: 100%;
-    text-align: center;
+    margin: 1rem 0;
+    font-size: 0.9rem;
 }
 
-.links:link, .links:visited, .links:active {
+td, th {
+    text-align: left;
+    border-bottom: 1px solid #353535;
+    border-collapse: collapse;
+}
+
+img {
+    margin: 10px auto;
+    display: block;
+    height: 31px;
+}
+
+a:link, a:visited, a:active {
     font-family: "Roboto", 'Courier-new', monospace;
     font-weight: 300;
     font-style: thin;
-    color: white;
-    font-size: 18px;
+    color: #d0d6d6;
     text-decoration: none;
-    transition: color 0.5s ease, background 0.5s ease;
+    transition: background 0.5s ease, color 0.5s ease;
 }
 
-.links:hover {
+a:hover {
     color: transparent;
     background: linear-gradient(to left, #041421, #042630, #4c7273, #86b9b0, #d0d6d6, #86b9b0, #4c7273, #042630, #041421);
     -webkit-background-clip: text;
-    background-clip:text;
+    background-clip: text;
     animation: slide 4s linear infinite;
     -webkit-background-size: 200%;
     background-size:200%;
@@ -93,6 +106,9 @@ hr {
 
 .footer {
     font-size:10px;
+}
+main {
+    margin: 1rem 0; 
 }
 
 p, ul, ol, dl {

@@ -1,123 +1,28 @@
-document.addEventListener("DOMContentLoaded", () => {
-    try {
-    console.log("Initializing particles.js");
-    if (typeof particlesJS !== "undefined") {
-      particlesJS("particles-js", {
-        "particles": {
-          "number": {
-            "value": 120,
-            "density": {
-              "enable": true,
-              "value_area": 700
-            }
-          },
-          "color": {
-            "value": "#86b9b0"
-          },
-          "shape": {
-            "type": "circle",
-            "stroke": {
-              "width": 0,
-              "color": "#86b9b0"
-            },
-            "polygon": {
-              "nb_sides": 5
-            },
-            "image": {
-              "src": "img/github.svg",
-              "width": 100,
-              "height": 100
-            }
-          },
-          "opacity": {
-            "value": 0.5,
-            "random": false,
-            "anim": {
-              "enable": false,
-              "speed": 1,
-              "opacity_min": 0.1,
-              "sync": false
-            }
-          },
-          "size": {
-            "value": 3,
-            "random": true,
-            "anim": {
-              "enable": false,
-              "speed": 40,
-              "size_min": 0.1,
-              "sync": false
-            }
-          },
-          "line_linked": {
-            "enable": true,
-            "distance": 120,
-            "color": "#86b9b0",
-            "opacity": 0.4,
-            "width": 1
-          },
-          "move": {
-            "enable": true,
-            "speed": 2,
-            "direction": "none",
-            "random": false,
-            "straight": false,
-            "out_mode": "out",
-            "bounce": false,
-            "attract": {
-              "enable": false,
-              "rotateX": 600,
-              "rotateY": 1200
-            }
-          }
-        },
-        "interactivity": {
-          "detect_on": "canvas",
-          "events": {
-            "onhover": {
-              "enable": true,
-              "mode": "grab"
-            },
-            "onclick": {
-              "enable": false,
-              "mode": "push"
-            },
-            "resize": true
-          },
-          "modes": {
-            "grab": {
-              "distance": 120,
-              "line_linked": {
-                "opacity": 1
-              }
-            },
-            "bubble": {
-              "distance": 400,
-              "size": 40,
-              "duration": 2,
-              "opacity": 8,
-              "speed": 3
-            },
-            "repulse": {
-              "distance": 200,
-              "duration": 0.4
-            },
-            "push": {
-              "particles_nb": 4
-            },
-            "remove": {
-              "particles_nb": 2
-            }
-          }
-        },
-        "retina_detect": true
-      });
-    } else {
-      console.warn("particlesJS is not defined. Skipping particle initialization.");
-    }
-  } catch (error) {
-    console.error("Error initializing particles:", error);
-  }
-});
+document.addEventListener('DOMContentLoaded', () => {
+  const memberList = document.querySelector('.member-list');
+  const countSpan = document.getElementById('member-count');
 
-var particlesJS;
+  // Populate the member list
+  fetch('data/data.csv')
+  .then(response => response.text())
+  .then(data => {
+    const rows = data.split('\n').slice(1);
+    rows.forEach(row => {
+      const cols = row.split(',');
+      if (cols.length === 5) {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><a href="${cols[0]}"><img src="${cols[0]}/favicon.ico"></a></td>
+          <td><a href="${cols[0]}" target="_blank" rel="noopener noreferrer">${cols[0].replace('https://', '')}</a></td>
+          <td>${cols[1]}</td>
+          <td>${cols[2]}</td>
+          <td>${cols[3]}</td>
+          <td>${cols[4]}</td>
+        `;
+        memberList.appendChild(tr);
+        
+      }
+    });
+    countSpan.textContent = rows.length;
+  });
+});
