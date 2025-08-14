@@ -25,4 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     countSpan.textContent = rows.length;
   });
+  
+  
 });
