@@ -19,7 +19,7 @@ html {
   background: #d0d6d6;
 }
 
-p, table, span {
+p, table, #member-count, .page-number {
     font-size: 16px;
     font-family: "Roboto", 'Courier-new', monospace;
     font-weight: 300;

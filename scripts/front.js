@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
       updateMemberList(currentPage, pageData);
     });
   });
+  updateLastCommitDate();
 });
 
 function updateMemberList(currentPage, data) {
@@ -50,3 +51,31 @@ function updateMemberList(currentPage, data) {
   const pageNumber = document.querySelector('.page-number');
   pageNumber.textContent = `${currentPage}`;
 }
+
+async function updateLastCommitDate() {
+    try {
+      const response = await fetch('https://api.github.com/repos/oop1-10/webring/commits');
+      if (!response.ok) {
+        throw new Error('Failed to fetch commits');
+      }
+      const commits = await response.json();
+      const latestCommit = commits[0]; // Get the most recent commit
+      const commitDate = new Date(latestCommit.commit.author.date);
+      
+      // Format the date (e.g., "August 14, 2025, 10:47 PM")
+      const options = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      };
+      const formattedDate = commitDate.toLocaleDateString('en-US', options);
+      
+      // Update the footer
+      document.getElementById('last-updated').textContent = formattedDate;
+    } catch (error) {
+      console.error('Error fetching commit date:', error);
+      document.getElementById('last-updated').textContent = 'Unable to fetch update time';
+    }
+  }
