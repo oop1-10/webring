@@ -33,7 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
     th.dataset.key = key;
     if (!th.dataset.state) th.dataset.state = '0'; // 0=original, 1=desc, 2=asc
     th.style.cursor = 'pointer';
-    // Preserve the base label from HTML and set the initial icon state
     th.dataset.label = th.dataset.label || th.textContent.trim();
     setHeaderIcon(th);
     th.addEventListener('click', () => sortByHeading(key, th));
@@ -41,7 +40,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   setTimeout(() => table.style.opacity = 1, 100);
 
-  // Pagination arrows should use currentData (not pageData)
   const arrows = document.querySelectorAll('.arrow');
   arrows.forEach(arrow => {
     arrow.addEventListener('click', () => {
@@ -64,7 +62,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Add helpers to manage header icons
 function setHeaderIcon(th) {
-  // Only annotate sortable headers (those with a dataset.key)
   if (!th.dataset.key) return;
   const label = th.dataset.label || th.textContent.trim();
   const state = th.dataset.state || '0';
