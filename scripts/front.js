@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   headingList = document.querySelectorAll('.member-table th');
 
   // Populate the member list
-  fetch('data/data.csv')
+  fetch('https://gist.githubusercontent.com/oop1-10/d5e6254545c342cc43f0a0ea4737085f/raw/e45acd62daeb4b236a16cccffc35720ad8f6edc9/data.csv')
     .then(response => response.text())
     .then(data => {
       const rows = data.split('\n').slice(1).filter(r => r.trim().length);
@@ -173,16 +173,18 @@ function updateMemberList(currentPage, data) {
   memberList.replaceChildren();
   setTimeout(() => {
     pageData.forEach(row => {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td><a href="${row[0]}"><img src="${row[5]}"></a></td>
-        <td><a href="${row[0]}" target="_blank" rel="noopener noreferrer">${row[0].replace('https://', '')}</a></td>
-        <td>${row[1]}</td>
-        <td>${row[2]}</td>
-        <td>${row[3]}</td>
-        <td>${row[4]}</td>
-      `;
-      memberList.appendChild(tr);
+      if (row[6] === "True") {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><a href="${row[0]}"><img src="${row[5]}"></a></td>
+          <td><a href="${row[0]}" target="_blank" rel="noopener noreferrer">${row[0].replace('https://', '')}</a></td>
+          <td>${row[1]}</td>
+          <td>${row[2]}</td>
+          <td>${row[3]}</td>
+          <td>${row[4]}</td>
+        `;
+        memberList.appendChild(tr);
+      }
     }, 200);
   });
 
