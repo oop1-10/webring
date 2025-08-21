@@ -9,6 +9,11 @@ html {
     scroll-behavior: smooth;
 }
 
+body {
+    transition: opacity 0.2s ease;
+    opacity: 0;
+}
+
 ::-moz-selection {
   color: #1a1a1a;
   background: #d0d6d6;
@@ -134,8 +139,6 @@ body {
 }
 
 .member-table {
-    transition: opacity 0.2s ease;
-    opacity: 0;
     width: 95%;
     margin: 0 auto;
 }
