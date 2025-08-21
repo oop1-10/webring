@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
   headingList = document.querySelectorAll('.member-table th');
 
   // Populate the member list
-  fetch('https://gist.githubusercontent.com/oop1-10/d5e6254545c342cc43f0a0ea4737085f/raw/data.csv')
+  fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vQQST-vQ5AxQYYaFXPh51BWqicW6h0nmD4bhZTVokF0MWxVWveCWpPcMUnqdG4ZzHh1C7Jp2TjiGDQ5/pub?output=csv')
     .then(response => response.text())
     .then(data => {
       const rows = data.split('\n').slice(1).filter(r => r.trim().length);
@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
     th.addEventListener('click', () => sortByHeading(key, th));
   });
 
-  setTimeout(() => table.style.opacity = 1, 100);
+  setTimeout(() => table.style.opacity = 1, 600);
 
   const arrows = document.querySelectorAll('.arrow');
   arrows.forEach(arrow => {
