@@ -3,6 +3,9 @@ let headingList = [];
 let currentData = [];
 let currentPage = 1;
 let originalIndexMap = null;
+let searchInput = null;
+let searchQuery = '';
+let filteredData = null;
 
 document.addEventListener('DOMContentLoaded', () => {
   const countSpan = document.getElementById('member-count');
@@ -57,6 +60,20 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
+
+  searchInput = document.querySelector('.searchBar');
+  if (searchInput) {
+    searchInput.addEventListener('input', () => {
+      searchQuery = (searchInput.value || '').trim();
+      if (!searchQuery) {
+        filteredData = null;
+      } else {
+        filteredData = rankAndFilter(searchQuery, pageData);
+      }
+      recomputeDataAndRender({ resetPage: true });
+    });
+  }
+
   updateLastCommitDate();
 });
 
@@ -74,6 +91,126 @@ function refreshHeaderIcons() {
   document.querySelectorAll('.member-table thead th').forEach(h => setHeaderIcon(h));
 }
 
+function getActiveSort() {
+  const active = Array.from(document.querySelectorAll('.member-table thead th'))
+    .find(h => (h.dataset.state || '0') !== '0' && h.dataset.key);
+  if (!active) return null;
+  return { key: active.dataset.key, state: Number(active.dataset.state || '0') };
+}
+
+function sortArrayBy(base, key, state) {
+  // state: 1 desc, 2 asc
+  const dir = state === 1 ? -1 : 1;
+  const arr = base.slice();
+
+  if (key === 'website') {
+    arr.sort((a, b) => {
+      const ai = originalIndexMap.get(a);
+      const bi = originalIndexMap.get(b);
+      return dir * (ai - bi);
+    });
+    return arr;
+  }
+
+  if (key === 'name') {
+    arr.sort((a, b) => dir * String(a[1] || '').toLowerCase().localeCompare(String(b[1] || '').toLowerCase()));
+    return arr;
+  }
+
+  if (key === 'program') {
+    const isEng = s => /\bengineering\b|\bengineer(ing)?\b|\beng\b/i.test(String(s || ''));
+    arr.sort((a, b) => {
+      const ae = isEng(a[2]) ? 0 : 1;
+      const be = isEng(b[2]) ? 0 : 1;
+      if (ae !== be) return dir * (ae - be);
+      return dir * String(a[2] || '').toLowerCase().localeCompare(String(b[2] || '').toLowerCase());
+    });
+    return arr;
+  }
+
+  if (key === 'year') {
+    arr.sort((a, b) => {
+      const ay = parseInt(a[3], 10); const by = parseInt(b[3], 10);
+      const av = Number.isNaN(ay) ? -Infinity : ay;
+      const bv = Number.isNaN(by) ? -Infinity : by;
+      return dir * (av - bv);
+    });
+    return arr;
+  }
+
+  if (key === 'degree') {
+    const degreeRank = (s) => {
+      const t = String(s || '').toLowerCase();
+      if (/(ph\.?d|doctor|doctoral)/.test(t)) return 3;
+      if (/(m\.?s|m\.?eng|master|mse|m\.?sc)/.test(t)) return 2;
+      if (/(b\.?s|b\.?sc|bachelor|ba)/.test(t)) return 1;
+      return 0;
+    };
+    arr.sort((a, b) => dir * (degreeRank(a[4]) - degreeRank(b[4])));
+    return arr;
+  }
+
+  return arr;
+}
+
+function rankAndFilter(query, rows) {
+  const q = query.toLowerCase();
+  const tokens = q.split(/\s+/).filter(Boolean);
+  const results = [];
+
+  const normUrl = (u) => String(u || '').toLowerCase().replace(/^https?:\/\//, '').replace(/^www\./, '');
+  const originalIdx = (row) => originalIndexMap.get(row);
+
+  for (const row of rows) {
+    const url = normUrl(row[0]);
+    const name = String(row[1] || '').toLowerCase();
+    const program = String(row[2] || '').toLowerCase();
+    const yearStr = String(row[3] || '').toLowerCase();
+    const degree = String(row[4] || '').toLowerCase();
+
+    let score = 0;
+
+    if (q && name === q) score += 30;
+    if (q && program === q) score += 18;
+    if (q && url.startsWith(q)) score += 14;
+    if (q && name.startsWith(q)) score += 16;
+    if (q && program.startsWith(q)) score += 12;
+    if (q && degree.startsWith(q)) score += 8;
+
+    for (const t of tokens) {
+      const isNum = /^\d{1,4}$/.test(t);
+
+      if (isNum) {
+        if (yearStr === t) score += 20;
+        else if (yearStr.startsWith(t)) score += 10;
+      }
+
+      if (name.startsWith(t)) score += 12;
+      else if (name.includes(t)) score += 8;
+
+      if (program.startsWith(t)) score += 9;
+      else if (program.includes(t)) score += 6;
+
+      if (degree.includes(t)) score += 5;
+
+      if (url.startsWith(t)) score += 7;
+      else if (url.includes(t)) score += 4;
+    }
+
+    if (score > 0) {
+      results.push({ row, score, idx: originalIdx(row) });
+    }
+  }
+
+  // Sort by score desc, then by original order to keep stable results
+  results.sort((a, b) => {
+    if (b.score !== a.score) return b.score - a.score;
+    return a.idx - b.idx;
+  });
+
+  return results.map(r => r.row);
+}
+
 function sortByHeading(key, th) {
   if (!originalIndexMap) return;
 
@@ -87,67 +224,29 @@ function sortByHeading(key, th) {
     if (h !== th) h.dataset.state = '0';
   });
 
-  let sorted;
+  // Recompute using current search/filter and active sort state
+  recomputeDataAndRender({ resetPage: false });
+}
 
-  if (next === 0) {
-    sorted = pageData.slice();
-  } else if (key === 'website') {
-    sorted = pageData.slice().sort((a, b) => {
-      const ai = originalIndexMap.get(a);
-      const bi = originalIndexMap.get(b);
-      return next === 1 ? bi - ai : ai - bi;
-    });
-  } else if (key === 'name') {
-    sorted = pageData.slice().sort((a, b) => {
-      const av = String(a[1] || '').toLowerCase();
-      const bv = String(b[1] || '').toLowerCase();
-      const cmp = av.localeCompare(bv);
-      return next === 1 ? -cmp : cmp;
-    });
-  } else if (key === 'program') {
-    sorted = pageData.slice().sort((a, b) => {
-      const ap = String(a[2] || '');
-      const bp = String(b[2] || '');
-      const ae = /\bengineering\b|\bengineer(ing)?\b|\beng\b/i.test(ap) ? 0 : 1;
-      const be = /\bengineering\b|\bengineer(ing)?\b|\beng\b/i.test(bp) ? 0 : 1;
-      const groupCmp = next === 1 ? ae - be : be - ae;
-      if (groupCmp !== 0) return groupCmp;
-      const cmp = ap.toLowerCase().localeCompare(bp.toLowerCase());
-      return next === 1 ? -cmp : cmp;
-    });
-  } else if (key === 'year') {
-    sorted = pageData.slice().sort((a, b) => {
-      const ay = parseInt(a[3], 10);
-      const by = parseInt(b[3], 10);
-      const av = Number.isNaN(ay) ? -Infinity : ay;
-      const bv = Number.isNaN(by) ? -Infinity : by;
-      return next === 1 ? bv - av : av - bv;
-    });
-  } else if (key === 'degree') {
-    const degreeRank = (s) => {
-      const t = String(s || '').toLowerCase();
-      if (/(ph\.?d|doctor|doctoral)/.test(t)) return 3;
-      if (/(m\.?s|m\.?eng|master|mse|m\.?sc)/.test(t)) return 2;
-      if (/(b\.?s|b\.?sc|bachelor|ba)/.test(t)) return 1;
-      return 0;
-    };
-    sorted = pageData.slice().sort((a, b) => {
-      const ad = degreeRank(a[4]);
-      const bd = degreeRank(b[4]);
-      return next === 1 ? bd - ad : ad - bd;
-    });
-  } else {
-    sorted = pageData.slice();
+function recomputeDataAndRender({ resetPage }) {
+  const table = document.querySelector('.member-table');
+  const activeSort = getActiveSort();
+
+  let base = searchQuery ? (filteredData || []) : pageData.slice();
+
+  // If sorting is active, apply it to the chosen base; else keep rank order for search or original order.
+  if (activeSort && activeSort.state !== 0) {
+    base = sortArrayBy(base, activeSort.key, activeSort.state);
   }
 
-  currentData = sorted;
+  currentData = base;
 
-  const table = document.querySelector('.member-table');
+  // Reset page when query changes or when requested
   const maxPage = Math.ceil((currentData.length || 0) / 10) || 1;
+  if (resetPage) currentPage = 1;
   if (currentPage > maxPage) currentPage = maxPage;
 
   table.style.opacity = 0;
-  // Update icons based on new states
   setTimeout(() => {
     updateMemberList(currentPage, currentData);
     refreshHeaderIcons();
@@ -173,7 +272,6 @@ function updateMemberList(currentPage, data) {
   memberList.replaceChildren();
   setTimeout(() => {
     pageData.forEach(row => {
-      if (row[6] === "True") {
         const tr = document.createElement('tr');
         tr.innerHTML = `
           <td><a href="${row[0]}"><img src="${row[5]}"></a></td>
@@ -184,7 +282,6 @@ function updateMemberList(currentPage, data) {
           <td>${row[4]}</td>
         `;
         memberList.appendChild(tr);
-      }
     }, 200);
   });
 
