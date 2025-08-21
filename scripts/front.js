@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
   headingList = document.querySelectorAll('.member-table th');
 
   // Populate the member list
-  fetch('https://gist.githubusercontent.com/oop1-10/d5e6254545c342cc43f0a0ea4737085f/raw/e45acd62daeb4b236a16cccffc35720ad8f6edc9/data.csv')
+  fetch('https://gist.githubusercontent.com/oop1-10/d5e6254545c342cc43f0a0ea4737085f/raw/data.csv')
     .then(response => response.text())
     .then(data => {
       const rows = data.split('\n').slice(1).filter(r => r.trim().length);
