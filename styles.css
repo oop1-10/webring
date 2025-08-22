@@ -2,11 +2,11 @@
     --bg-color: #1a1a1a;
     --member-bg-color: #262626;
     --text-color: #d0d6d6;
-    --accent-color: #86b9b0;
+    --accent-color: #d32000;
     --border-color: #353535;
     --hover-bg-color: #2c2c2c;
-    --gradient-colors: #041421, #042630, #4c7273, var(--accent-color);
-    --reversed-gradient-colors: var(--accent-color), #4c7273, #042630, #041421;
+    --gradient-colors: #0f0200, #3b0900, #971700, var(--accent-color);
+    --reversed-gradient-colors: var(--accent-color), #971700, #3b0900, #0f0200;
     --font-family: "Roboto", 'Courier-new', monospace;
     --header-font-family: "JetBrains Mono", 'Courier-new', monospace;
     --arrow-color: white;
@@ -16,11 +16,11 @@ html[data-theme="light"] {
     --bg-color: #e5e5e5;
     --member-bg-color: #d9d9d9;
     --text-color: #2f2929;
-    --accent-color: #79464f;
+    --accent-color: #d32000;
     --border-color: #cacaca;
     --hover-bg-color: #d3d3d3;
-    --gradient-colors: #fbebde, #fbd9cf, #b38d8c, var(--accent-color);
-    --reversed-gradient-colors: var(--accent-color), #b38d8c, #fbd9cf, #fbebde;
+    --gradient-colors: rgb(190, 182, 174), rgb(190, 135, 118), #d1452c, var(--accent-color);
+    --reversed-gradient-colors: var(--accent-color), #d1452c, rgb(190, 135, 118), rgb(190, 182, 174);
     --font-family: "Roboto", 'Courier-new', monospace;
     --header-font-family: "JetBrains Mono", 'Courier-new', monospace;
     --arrow-color: black;
@@ -221,7 +221,7 @@ body {
     font-size: large;
     color: var(--text-color);
     background-color: var(--bg-color);
-
+    font-family: var(--font-family);
 }
 
 .theme-toggle {

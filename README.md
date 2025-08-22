@@ -22,6 +22,19 @@ To join the WebRing, you must simply be a current or previous student of York Un
 
 In an effort to reduce the amount of template/website builders in the WebRing, engineering students as well as Computer Science students are not allowed to submit these kinds of websites.  As an act of courtesy and understanding, other degrees may be accepted into the ring using these kinds of websites, but custom websites are still preferred.
 
+### YorkU WebRing Embed
+
+Add this snippet where you want the widget to appear:
+
+```html
+<embed
+  src="https://webring.thomasnewman.ca/webring-widget.html?site=https%3A%2F%2Fthomasnewman.ca"
+  width="340"
+  height="140"
+  style="border:0; max-width:100%;"
+  loading="lazy"
+/>
+
 ## I need help making a website
 
 Custom website support can be provided via email by contacting me at **tnewman057@gmail.com** or **newman06@my.yorku.ca**.  Whether it comes to programming, serving your website, buying your custom domain, etc. I am available to help.
