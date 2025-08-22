@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const table = document.querySelector('.member-table');
   const theadRow = table.tHead ? table.tHead.rows[0] : table.querySelector('thead tr');
   const headers = Array.from(theadRow ? theadRow.cells : []);
-  const keyMap = [null, 'website', 'name', 'program', 'year', 'degree'];
+  const keyMap = [null, 'website', 'fname', 'lname', 'program', 'year', 'degree'];
 
   headers.forEach((th, idx) => {
     const key = keyMap[idx];
@@ -100,7 +100,6 @@ function getActiveSort() {
 }
 
 function sortArrayBy(base, key, state) {
-  // state: 1 desc, 2 asc
   const dir = state === 1 ? -1 : 1;
   const arr = base.slice();
 
@@ -113,25 +112,28 @@ function sortArrayBy(base, key, state) {
     return arr;
   }
 
-  if (key === 'name') {
-    arr.sort((a, b) => dir * String(a[1] || '').toLowerCase().localeCompare(String(b[1] || '').toLowerCase()));
+  if (key === 'fname' || key === 'lname') {
+    const idx = key === 'fname' ? 1 : 2;
+    arr.sort((a, b) =>
+      dir * String(a[idx] || '').toLowerCase().localeCompare(String(b[idx] || '').toLowerCase())
+    );
     return arr;
   }
 
   if (key === 'program') {
     const isEng = s => /\bengineering\b|\bengineer(ing)?\b|\beng\b/i.test(String(s || ''));
     arr.sort((a, b) => {
-      const ae = isEng(a[2]) ? 0 : 1;
-      const be = isEng(b[2]) ? 0 : 1;
+      const ae = isEng(a[3]) ? 0 : 1;
+      const be = isEng(b[3]) ? 0 : 1;
       if (ae !== be) return dir * (ae - be);
-      return dir * String(a[2] || '').toLowerCase().localeCompare(String(b[2] || '').toLowerCase());
+      return dir * String(a[3] || '').toLowerCase().localeCompare(String(b[3] || '').toLowerCase());
     });
     return arr;
   }
 
   if (key === 'year') {
     arr.sort((a, b) => {
-      const ay = parseInt(a[3], 10); const by = parseInt(b[3], 10);
+      const ay = parseInt(a[4], 10); const by = parseInt(b[4], 10);
       const av = Number.isNaN(ay) ? -Infinity : ay;
       const bv = Number.isNaN(by) ? -Infinity : by;
       return dir * (av - bv);
@@ -147,7 +149,7 @@ function sortArrayBy(base, key, state) {
       if (/(b\.?s|b\.?sc|bachelor|ba)/.test(t)) return 1;
       return 0;
     };
-    arr.sort((a, b) => dir * (degreeRank(a[4]) - degreeRank(b[4])));
+    arr.sort((a, b) => dir * (degreeRank(a[5]) - degreeRank(b[5])));
     return arr;
   }
 
@@ -164,17 +166,27 @@ function rankAndFilter(query, rows) {
 
   for (const row of rows) {
     const url = normUrl(row[0]);
-    const name = String(row[1] || '').toLowerCase();
-    const program = String(row[2] || '').toLowerCase();
-    const yearStr = String(row[3] || '').toLowerCase();
-    const degree = String(row[4] || '').toLowerCase();
+    const fname = String(row[1] || '').toLowerCase();
+    const lname = String(row[2] || '').toLowerCase();
+    const fullName = (fname && lname) ? `${fname} ${lname}` : fname || lname;
+    const revFull = (fname && lname) ? `${lname} ${fname}` : fullName;
+    const program = String(row[3] || '').toLowerCase();
+    const yearStr = String(row[4] || '').toLowerCase();
+    const degree = String(row[5] || '').toLowerCase();
 
     let score = 0;
 
-    if (q && name === q) score += 30;
+    // Exact / full matches
+    if (q && fullName === q) score += 35;
+    if (q && revFull === q) score += 30;
+    if (q && fname === q) score += 22;
+    if (q && lname === q) score += 22;
     if (q && program === q) score += 18;
     if (q && url.startsWith(q)) score += 14;
-    if (q && name.startsWith(q)) score += 16;
+
+    if (q && fullName.startsWith(q)) score += 20;
+    if (q && fname.startsWith(q)) score += 12;
+    if (q && lname.startsWith(q)) score += 12;
     if (q && program.startsWith(q)) score += 12;
     if (q && degree.startsWith(q)) score += 8;
 
@@ -186,14 +198,24 @@ function rankAndFilter(query, rows) {
         else if (yearStr.startsWith(t)) score += 10;
       }
 
-      if (name.startsWith(t)) score += 12;
-      else if (name.includes(t)) score += 8;
+      // Name token scoring
+      if (fname.startsWith(t)) score += 10;
+      else if (fname.includes(t)) score += 6;
 
+      if (lname.startsWith(t)) score += 10;
+      else if (lname.includes(t)) score += 6;
+
+      if (fullName.includes(t)) score += 4;
+
+      // Program
       if (program.startsWith(t)) score += 9;
       else if (program.includes(t)) score += 6;
 
-      if (degree.includes(t)) score += 5;
+      // Degree
+      if (degree.startsWith(t)) score += 5;
+      else if (degree.includes(t)) score += 3;
 
+      // URL
       if (url.startsWith(t)) score += 7;
       else if (url.includes(t)) score += 4;
     }
@@ -203,7 +225,6 @@ function rankAndFilter(query, rows) {
     }
   }
 
-  // Sort by score desc, then by original order to keep stable results
   results.sort((a, b) => {
     if (b.score !== a.score) return b.score - a.score;
     return a.idx - b.idx;
@@ -212,7 +233,7 @@ function rankAndFilter(query, rows) {
   return results.map(r => r.row);
 }
 
-function sortByHeading(key, th) {
+function sortByHeading(th) {
   if (!originalIndexMap) return;
 
   // Cycle this header's state: 0 -> 1 (desc), 1 -> 2 (asc), 2 -> 0 (original)
@@ -274,12 +295,12 @@ function updateMemberList(currentPage, data) {
     pageData.forEach(row => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
-          <td><a href="${row[0]}"><img src="${row[5]}"></a></td>
+          <td><a href="${row[0]}"><img src="${row[6]}"></a></td>
           <td><a href="${row[0]}" target="_blank" rel="noopener noreferrer">${row[0].replace('https://', '')}</a></td>
-          <td>${row[1]}</td>
-          <td>${row[2]}</td>
+          <td>${row[2]}, ${row[1]}</td>
           <td>${row[3]}</td>
           <td>${row[4]}</td>
+          <td>${row[5]}</td>
         `;
         memberList.appendChild(tr);
     }, 200);
@@ -292,7 +313,8 @@ function updateMemberList(currentPage, data) {
   const maxPage = Math.ceil((data.length || 0) / 10) || 1;
   if (currentPage <= 1) {
     leftArrow.style.opacity = 0;
-  } else if (currentPage = maxPage) {
+  }
+  if (currentPage >= maxPage) {
     rightArrow.style.opacity = 0;
   }
 }
@@ -327,8 +349,7 @@ async function updateLastCommitDate() {
 function updateTheme() {
   const currentTheme = document.documentElement.getAttribute('data-theme');
   const icon = document.querySelector('.theme-toggle img');
-  icon.style.transition = 'transform 0.3s ease;';
-  icon.style.transform = 'opacity 0.3s ease';
+  icon.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
   icon.style.opacity = '0';
   setTimeout(() => {
     icon.src = currentTheme === 'dark' ? '/images/light-theme-icon.svg' : '/images/dark-theme-icon.png';
