@@ -1,8 +1,37 @@
+:root {
+    --bg-color: #1a1a1a;
+    --member-bg-color: #262626;
+    --text-color: #d0d6d6;
+    --accent-color: #86b9b0;
+    --border-color: #353535;
+    --hover-bg-color: #2c2c2c;
+    --gradient-colors: #041421, #042630, #4c7273, var(--accent-color);
+    --reversed-gradient-colors: var(--accent-color), #4c7273, #042630, #041421;
+    --font-family: "Roboto", 'Courier-new', monospace;
+    --header-font-family: "JetBrains Mono", 'Courier-new', monospace;
+    --arrow-color: white;
+}
+
+html[data-theme="light"] {
+    --bg-color: #e5e5e5;
+    --member-bg-color: #d9d9d9;
+    --text-color: #2f2929;
+    --accent-color: #79464f;
+    --border-color: #cacaca;
+    --hover-bg-color: #d3d3d3;
+    --gradient-colors: #fbebde, #fbd9cf, #b38d8c, var(--accent-color);
+    --reversed-gradient-colors: var(--accent-color), #b38d8c, #fbd9cf, #fbebde;
+    --font-family: "Roboto", 'Courier-new', monospace;
+    --header-font-family: "JetBrains Mono", 'Courier-new', monospace;
+    --arrow-color: black;
+}
+
 /* CSS for HTML page */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    transition: color 0.5s ease, background-color 0.5s ease;
 }
 
 html {
@@ -15,21 +44,21 @@ body {
 }
 
 ::-moz-selection {
-  color: #1a1a1a;
-  background: #d0d6d6;
+  color: var(--bg-color);
+  background: var(--text-color);
 }
 
 ::selection {
-  color: #1a1a1a;
-  background: #d0d6d6;
+  color: var(--bg-color);
+  background: var(--text-color);
 }
 
 p, table, #member-count, .page-number {
     font-size: 16px;
-    font-family: "Roboto", 'Courier-new', monospace;
+    font-family: var(--font-family);
     font-weight: 300;
     font-style: thin;
-    color: #d0d6d6;
+    color: var(--text-color);
 }
 
 table {
@@ -41,7 +70,7 @@ table {
 
 td, th {
     text-align: left;
-    border-bottom: 1px solid #353535;
+    border-bottom: 1px solid var(--border-color);
     border-collapse: collapse;
 }
 
@@ -52,17 +81,17 @@ img {
 }
 
 a:link, a:visited, a:active {
-    font-family: "Roboto", 'Courier-new', monospace;
+    font-family: var(--font-family);
     font-weight: 300;
     font-style: thin;
-    color: #d0d6d6;
+    color: var(--text-color);
     text-decoration: none;
     transition: background 0.5s ease, color 0.5s ease;
 }
 
 a:hover {
     color: transparent;
-    background: linear-gradient(to left, #041421, #042630, #4c7273, #86b9b0, #d0d6d6, #86b9b0, #4c7273, #042630, #041421);
+    background: linear-gradient(to left, var(--gradient-colors), var(--text-color), var(--reversed-gradient-colors));
     -webkit-background-clip: text;
     background-clip: text;
     animation: slide 4s linear infinite;
@@ -70,24 +99,21 @@ a:hover {
     background-size:200%;
 }
 
-h1{ 
-    color: #d0d6d6;
-    font-size: 40px;
+h1, h2 {
+    color: var(--text-color);
     font-optical-sizing: auto;
-    font-family: "JetBrains Mono", 'Courier-new', monospace;
+    font-family: var(--header-font-family);
     font-weight: 300;
     font-style: thin;
     margin:0 0 10px 0;
 }
 
-h2 {
-    color: #d0d6d6;
+.large {
+    font-size: 40px;
+}
+
+.medium {
     font-size: 30px;
-    font-optical-sizing: auto;
-    font-family: "JetBrains Mono", 'Courier-new', monospace;
-    font-weight: 300;
-    font-style: thin;
-    margin:0 0 10px 0;
 }
 
 hr {
@@ -95,7 +121,7 @@ hr {
     width: 90%;
     height: 2px;
     border: none;
-    background: linear-gradient(to left, #041421, #042630, #4c7273, #86b9b0, #d0d6d6, #86b9b0, #4c7273, #042630, #041421);
+    background: linear-gradient(to left, var(--gradient-colors), var(--text-color), var(--reversed-gradient-colors));
     background-size: 200% auto;
     animation: slide 4s linear infinite;
 }
@@ -121,19 +147,19 @@ p, ul, ol, dl {
 }
 
 body {
-    background-color: #1a1a1a;
+    background-color: var(--bg-color);
     max-width: 800px;
     padding: 20px;
     line-height: 1.6;
     scrollbar-width: thin;
-    scrollbar-color: #d0d6d6 transparent;
+    scrollbar-color: var(--text-color) transparent;
     justify-content: center;
     margin: 0 auto;
     width: 100%;
 }
 
 .member-table tbody{
-    border: 2px solid rgb(44, 44, 44);
+    border: 2px solid var(--border-color);
     overflow: hidden;
     transition: height 0.2s ease, opacity 0.2s ease;
 }
@@ -141,10 +167,11 @@ body {
 .member-table {
     width: 95%;
     margin: 0 auto;
+    transition: opacity 0.2s ease;
 }
 
 .member-background {
-    background-color:#262626;
+    background-color: var(--member-bg-color);
     border-radius: 10px;
     padding: 0px;
     width: 100%;
@@ -159,16 +186,16 @@ body {
 .arrow {
     height: 30px;
     width: 50px;
-    background-color: #1b1b1b;
+    background-color: var(--bg-color);
     cursor: pointer;
-    color: white;
+    color: var(--arrow-color);
     transition: background-color 0.3s ease, opacity 0.3s ease;
     border: 0;
     opacity: 0;
     border-radius: 5px;
 }
 .arrow:hover {
-    background-color: #2c2c2c;
+    background-color: var(--hover-bg-color);
 }
 
 #right {
@@ -187,10 +214,27 @@ body {
     height: 40px;
     margin: 0;
     padding: 0;
-    border: 2px solid #353535;
+    border: 2px solid var(--border-color);
     border-radius: 10px 10px 0px 0px;
     font-size: large;
-    color: #d0d6d6;
-    background-color: #262626;
-    
+    color: var(--text-color);
+    background-color: var(--bg-color);
+
+}
+
+.theme-toggle {
+    position: relative;
+    top: -65px;
+    left: 330px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+img {
+    transition: transform 0.3s ease;
+}
+
+img:hover {
+    transform: scale(1.2);
 }

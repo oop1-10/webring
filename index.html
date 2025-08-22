@@ -28,7 +28,8 @@
             <script src="scripts/front.js"></script>
             <canvas id="background-canvas" style="display: none; width: 611px; height: 951px;" width="611" height="951"></canvas>
             <header>
-                <h1>YorkU WebRing</h1>
+                <h1 class="large">YorkU WebRing</h1>
+                <button onclick="updateTheme()" class="theme-toggle"><img src="/images/dark-theme-icon.png" alt="Toggle Theme"></button>
                 <p>This is a WebRing exclusive to York University Engineering students and the surrounding community.</p>
                 <hr>
             </header>
@@ -40,7 +41,7 @@
                     </p>
                 </section>
                 <section class="members">
-                    <h2>Members</h2>
+                    <h2 class="medium">Members</h2>
                     <p>There is currently <span id="member-count"></span> members in the WebRing.</p>
                     <div class="member-background">
                         <input type="text" placeholder=" Search members..." class="searchBar">
@@ -65,6 +66,7 @@
                     </div>
                 </section>
                 <section class="what">
+                    <br>
                     <h2>What is a WebRing?</h2>
                     <p>A WebRing is a collection of websites linked together in a circular structure. In the early days of the web, WebRings were a popular way to discover related websites.</p>
                 </section>

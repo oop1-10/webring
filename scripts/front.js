@@ -264,8 +264,7 @@ function updateMemberList(currentPage, data) {
   const leftArrow = document.getElementById('left');
   const rightArrow = document.getElementById('right');
 
-  const rowHeight = 50;
-  const headerHeight = 40;
+  const rowHeight = 50; const headerHeight = 40;
   const numRows = pageData.length;
   const newHeight = headerHeight + numRows * rowHeight;
   tbody.style.height = `${newHeight}px`;
@@ -293,34 +292,48 @@ function updateMemberList(currentPage, data) {
   const maxPage = Math.ceil((data.length || 0) / 10) || 1;
   if (currentPage <= 1) {
     leftArrow.style.opacity = 0;
-  } else if (currentPage >= maxPage) {
+  } else if (currentPage = maxPage) {
     rightArrow.style.opacity = 0;
   }
 }
 
 async function updateLastCommitDate() {
-    try {
-      const response = await fetch('https://api.github.com/repos/oop1-10/webring/commits');
-      if (!response.ok) {
-        throw new Error('Failed to fetch commits');
-      }
-      const commits = await response.json();
-      const latestCommit = commits[0]; // Get the most recent commit
-      const commitDate = new Date(latestCommit.commit.author.date);
-      
-      const options = {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-      };
-      const formattedDate = commitDate.toLocaleDateString('en-US', options);
-      
-      document.getElementById('last-updated').textContent = formattedDate;
-    } catch (error) {
-      console.error('Error fetching commit date:', error);
-      document.getElementById('last-updated').textContent = 'Unable to fetch update time';
+  try {
+    const response = await fetch('https://api.github.com/repos/oop1-10/webring/commits');
+    if (!response.ok) {
+      throw new Error('Failed to fetch commits');
     }
+    const commits = await response.json();
+    const latestCommit = commits[0]; // Get the most recent commit
+    const commitDate = new Date(latestCommit.commit.author.date);
+    
+    const options = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    };
+    const formattedDate = commitDate.toLocaleDateString('en-US', options);
+    
+    document.getElementById('last-updated').textContent = formattedDate;
+  } catch (error) {
+    console.error('Error fetching commit date:', error);
+    document.getElementById('last-updated').textContent = 'Unable to fetch update time';
   }
+}
+
+function updateTheme() {
+  const currentTheme = document.documentElement.getAttribute('data-theme');
+  const icon = document.querySelector('.theme-toggle img');
+  icon.style.transition = 'transform 0.3s ease;';
+  icon.style.transform = 'opacity 0.3s ease';
+  icon.style.opacity = '0';
+  setTimeout(() => {
+    icon.src = currentTheme === 'dark' ? '/images/light-theme-icon.svg' : '/images/dark-theme-icon.png';
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', newTheme);
+    icon.style.opacity = '1';
+  }, 200);
+}
