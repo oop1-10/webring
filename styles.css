@@ -182,6 +182,7 @@ body {
     height: 30px;
     padding-bottom: 40px;
     padding-top: 10px;
+    display: flex;
 }
 
 .arrow {
@@ -222,6 +223,7 @@ body {
     color: var(--text-color);
     background-color: var(--bg-color);
     font-family: var(--font-family);
+    text-align: center;
 }
 
 .theme-toggle {

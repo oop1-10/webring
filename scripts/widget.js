@@ -75,6 +75,26 @@
       return;
     }
 
+      const total = rows.length;
+      if (total >= 1) {
+        // Use first member as reference
+        const baseIdx = 0;
+        prevEl.href = rows[(baseIdx - 1 + total) % total][0];
+        nextEl.href = rows[(baseIdx + 1) % total][0];
+        randEl.href = rows[Math.floor(Math.random() * total)][0];
+        prevEl.title = 'Previous member';
+        nextEl.title = 'Next member';
+        randEl.title = 'Random member';
+      } else {
+        // No members: hide nav
+        prevEl.style.display = nextEl.style.display = randEl.style.display = 'none';
+      }
+      listEl.style.display = 'none';      // Hide Home button on ring home
+      statusEl.style.display = 'none';    // Hide status on ring home
+      widget.classList.remove('loading');
+      return;
+    }
+
     const currentNorm = normalize(siteParam);
     const idx = resolveIndex(rows, currentNorm);
 
@@ -87,13 +107,13 @@
       console.warn('[WebRing Widget] Supplied site URL not found:', siteParam);
       if (sample) console.warn('Example member URLs:', sample);
     } else {
+      // Recognized member site: show status + all buttons
       const total = rows.length;
       const prevIdx = (idx - 1 + total) % total;
       const nextIdx = (idx + 1) % total;
-      const randUrl = pickRandom(rows.map(r=>r[0]), idx);
-
       const prevUrl = rows[prevIdx][0];
       const nextUrl = rows[nextIdx][0];
+      const randUrl = pickRandom(rows.map(r=>r[0]), idx);
 
       prevEl.href = prevUrl;
       nextEl.href = nextUrl;
@@ -104,6 +124,8 @@
       nextEl.title = 'Next: ' + buildUrlDisplay(nextUrl);
       randEl.title = 'Random member';
       listEl.title = 'WebRing home';
+      listEl.style.display = ''; // ensure visible
+      statusEl.style.display = ''; // ensure visible
     }
 
     widget.classList.remove('loading');
