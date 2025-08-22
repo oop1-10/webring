@@ -233,7 +233,7 @@ function rankAndFilter(query, rows) {
   return results.map(r => r.row);
 }
 
-function sortByHeading(th) {
+function sortByHeading(key, th) {
   if (!originalIndexMap) return;
 
   // Cycle this header's state: 0 -> 1 (desc), 1 -> 2 (asc), 2 -> 0 (original)
