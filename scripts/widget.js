@@ -75,6 +75,7 @@
       return;
     }
 
+    if (!siteParam.trim()) {
       const total = rows.length;
       if (total >= 1) {
         // Use first member as reference
@@ -86,11 +87,10 @@
         nextEl.title = 'Next member';
         randEl.title = 'Random member';
       } else {
-        // No members: hide nav
         prevEl.style.display = nextEl.style.display = randEl.style.display = 'none';
       }
-      listEl.style.display = 'none';      // Hide Home button on ring home
-      statusEl.style.display = 'none';    // Hide status on ring home
+      listEl.style.display = 'none';   // Hide Home button
+      statusEl.style.display = 'none'; // Hide status
       widget.classList.remove('loading');
       return;
     }
