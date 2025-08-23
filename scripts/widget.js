@@ -81,7 +81,7 @@
         // Use first member as reference
         const baseIdx = 0;
         prevEl.href = rows[(baseIdx - 1 + total) % total][0];
-        nextEl.href = rows[(baseIdx + 1) % total][0];
+        nextEl.href = rows[baseIdx % total][0];
         randEl.href = rows[Math.floor(Math.random() * total)][0];
         prevEl.title = 'Previous member';
         nextEl.title = 'Next member';

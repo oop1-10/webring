@@ -18,7 +18,7 @@
   --accent:#79464f;
   --border:#c9c9c9;
 }
-* { box-sizing:border-box; font-family:var(--font); }
+* { box-sizing:border-box; font-family:var(--font); transition: color 0.3s ease;}
 body {
   margin:0;
   background:var(--bg);
@@ -36,7 +36,9 @@ body {
   width:100%;
   max-width:320px;
 }
-.webring-widget.loading { opacity:.7 }
+.webring-widget.loading {
+  opacity:.7;
+}
 .yw-title {
   font-size:15px;
   font-weight:600;

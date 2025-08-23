@@ -352,6 +352,8 @@ async function updateLastCommitDate() {
 function updateTheme() {
   const currentTheme = document.documentElement.getAttribute('data-theme');
   const icon = document.querySelector('.theme-toggle img');
+  const widget = document.querySelector('.widget');
+  const themeURL = new URL(widget.src);
   icon.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
   icon.style.opacity = '0';
   setTimeout(() => {
@@ -359,5 +361,7 @@ function updateTheme() {
     const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', newTheme);
     icon.style.opacity = '1';
+    themeURL.searchParams.set('theme', newTheme);
+    widget.src = themeURL.toString();
   }, 200);
 }
