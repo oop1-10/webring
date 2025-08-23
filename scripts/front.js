@@ -309,13 +309,16 @@ function updateMemberList(currentPage, data) {
   const pageNumber = document.querySelector('.page-number');
   pageNumber.textContent = `${currentPage}`;
   leftArrow.style.opacity = 1; rightArrow.style.opacity = 1;
+  leftArrow.style.cursor = 'pointer'; rightArrow.style.cursor = 'pointer';
 
   const maxPage = Math.ceil((data.length || 0) / 10) || 1;
   if (currentPage <= 1) {
     leftArrow.style.opacity = 0;
+    leftArrow.style.cursor = 'default';
   }
   if (currentPage >= maxPage) {
     rightArrow.style.opacity = 0;
+    rightArrow.style.cursor = 'default';
   }
 }
 

@@ -183,6 +183,7 @@ body {
     padding-bottom: 40px;
     padding-top: 10px;
     display: flex;
+    justify-content: center;
 }
 
 .arrow {
@@ -202,11 +203,11 @@ body {
 }
 
 #right {
-    margin: 0 0 0 25%;
+    margin: 0 auto;
 }
 
 #left {
-    margin: 0 20%;
+    margin: 0 auto;
 }
 
 .page-number {
@@ -241,4 +242,9 @@ img {
 
 img:hover {
     transform: scale(1.2);
+}
+
+.widget {
+    margin: 0 auto;
+    display: flex;
 }

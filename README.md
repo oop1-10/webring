@@ -28,12 +28,13 @@ Add this snippet where you want the widget to appear:
 
 ```html
 <embed
-  src="https://webring.thomasnewman.ca/webring-widget.html?site=https%3A%2F%2Fthomasnewman.ca"
-  width="340"
-  height="140"
-  style="border:0; max-width:100%;"
+  src="https://webring.thomasnewman.ca/webring-widget.html?site=https://thomasnewman.ca"
+  width="320"
+  height="96"
+  style="max-width:100%; border-radius: 8px;"
   loading="lazy"
-/>
+  class="widget"
+  />
 
 ## I need help making a website
 
