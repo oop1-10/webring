@@ -18,7 +18,7 @@ A more formal way of joining the WebRing will be provided in the future.
 
 ## Requirements for joining the YorkU WebRing
 
-To join the WebRing, you must simply be a current or previous student of York University.  Please note that all members should have a working website at the time of application. Websites in development are also acceptable, but should be completed in the months following the acceptance into the WebRing.  Inactive or out of date websites may be removed at YorkU's discretion.  Websites should hopefully use a custom domain name (firstnamelastname.ca, etc.), but free domain names such as github.io are acceptable if you are planning on getting a custom domain name.
+To join the WebRing, you must simply be a current or previous student of York University.  Please note that all members should have a working website at the time of application. Websites in development are also acceptable, but should be completed in the months following the acceptance into the WebRing.  Inactive or out of date websites may be removed at YorkU's discretion.  Websites should hopefully use a custom domain name (firstnamelastname.ca, etc.), but free domain names such as github.io are acceptable if you are planning on getting a custom domain name.  All WebRing websites must contain the widget on their home page.
 
 In an effort to reduce the amount of template/website builders in the WebRing, engineering students as well as Computer Science students are not allowed to submit these kinds of websites.  As an act of courtesy and understanding, other degrees may be accepted into the ring using these kinds of websites, but custom websites are still preferred.
 
