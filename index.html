@@ -26,7 +26,6 @@
 
     <body>
         <script src="scripts/front.js"></script>
-        <canvas id="background-canvas" style="display: none; width: 611px; height: 951px;" width="611" height="951"></canvas>
         <header>
             <div class="header-container">
                 <h1 class="large">YorkU WebRing</h1>
@@ -35,9 +34,6 @@
             <p style="padding-bottom: 10px;">This is a WebRing exclusive to York University Engineering students and the surrounding community.</p>
             <embed
                 src="/webring-widget.html?theme=dark"
-                width="320"
-                height="96"
-                style="max-width:100%; border-radius: 8px;"
                 loading="lazy"
                 class="widget"
                 />
@@ -55,17 +51,18 @@
                 <p>There is currently <span id="member-count"></span> members in the WebRing.</p>
                 <div class="member-background">
                     <input type="text" placeholder=" Search members..." class="searchBar">
-                    <table class="member-table">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th id="website">Website</th>
-                                <th id="name">Name</th>
-                                <th id="program">Program</th>
-                                <th id="year">Year</th>
-                                <th id="degree">Degree</th>
-                            </tr>
-                        </thead>
+                    <div class="member-container">
+                        <table class="member-table">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th id="website">Website</th>
+                                    <th id="name">Name</th>
+                                    <th id="program">Program</th>
+                                    <th id="year">Year</th>
+                                    <th id="degree">Degree</th>
+                                </tr>
+                            </thead>
                         <tbody class="member-list"></tbody>
                     </table>
                     <div class="arrow-bar">
@@ -78,11 +75,12 @@
             <section class="what">
                 <br>
                 <h2>What is a WebRing?</h2>
-                <p>A WebRing is a collection of websites linked together in a circular structure. In the early days of the web, WebRings were a popular way to discover related websites.</p>
+                <p>A WebRing is a collection of websites linked together in a circular structure. In the early days of the web, WebRings were a popular way to discover related websites.</p><br>
+                <p>View the <a href="https://github.com/oop1-10/webring" target="_blank" rel="noopener noreferrer">Github</a> for information on how to join</p>
             </section>
         </main>
         <footer>
-            <p class="footer">Last updated: <span id="last-updated"></span><br>© 2025 Thomas Newman, Hosted on Github Pages</p>
+            <p class="footer">Last updated: <span id="last-updated"></span><br>© 2025 <a href="https://github.com/oop1-10" class="links">Thomas Newman</a>, Hosted on Github Pages</p>
         </footer>
     </body>
 </html>

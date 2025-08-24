@@ -1,3 +1,5 @@
+/* CSS for HTML page */
+
 :root {
     --bg-color: #1a1a1a;
     --member-bg-color: #262626;
@@ -26,7 +28,6 @@ html[data-theme="light"] {
     --arrow-color: black;
 }
 
-/* CSS for HTML page */
 * {
     margin: 0;
     padding: 0;
@@ -72,6 +73,7 @@ td, th {
     text-align: left;
     border-bottom: 1px solid var(--border-color);
     border-collapse: collapse;
+    padding: 0px 10px;
 }
 
 img {
@@ -85,7 +87,6 @@ a:link, a:visited, a:active {
     font-weight: 300;
     font-style: thin;
     color: var(--text-color);
-    text-decoration: none;
     transition: background 0.5s ease, color 0.5s ease;
 }
 
@@ -99,7 +100,7 @@ a:hover {
     background-size:200%;
 }
 
-h1, h2 {
+h1, h2, h3{
     color: var(--text-color);
     font-optical-sizing: auto;
     font-family: var(--header-font-family);
@@ -160,7 +161,6 @@ body {
 
 .member-table tbody{
     border: 2px solid var(--border-color);
-    overflow: hidden;
     transition: height 0.2s ease, opacity 0.2s ease;
 }
 
@@ -169,13 +169,15 @@ body {
     margin: 0 auto;
     transition: opacity 0.2s ease;
 }
+.member-container {
+    overflow-x: auto;
+}
 
 .member-background {
     background-color: var(--member-bg-color);
     border-radius: 10px;
     padding: 0px;
     width: 100%;
-    overflow-x: auto;
 }
 
 .arrow-bar {
@@ -251,4 +253,10 @@ img:hover {
 .widget {
     margin: 0 auto;
     display: flex;
+    max-height: 104px;
+    scrollbar-width: none;
+}
+
+.none {
+    text-decoration: none;
 }

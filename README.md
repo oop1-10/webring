@@ -28,9 +28,7 @@ Add this snippet where you want the widget to appear:
 
 ```html
 <embed
-  src="https://webring.thomasnewman.ca/webring-widget.html?site=https://thomasnewman.ca"
-  width="320"
-  height="96"
+  src="/webring-widget.html?theme=dark"
   style="max-width:100%; border-radius: 8px;"
   loading="lazy"
   class="widget"

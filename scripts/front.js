@@ -113,7 +113,7 @@ function sortArrayBy(base, key, state) {
   }
 
   if (key === 'fname' || key === 'lname') {
-    const idx = key === 'fname' ? 1 : 2;
+    const idx = key === 'lname' ? 1 : 2;
     arr.sort((a, b) =>
       dir * String(a[idx] || '').toLowerCase().localeCompare(String(b[idx] || '').toLowerCase())
     );
@@ -121,7 +121,7 @@ function sortArrayBy(base, key, state) {
   }
 
   if (key === 'program') {
-    const isEng = s => /\bengineering\b|\bengineer(ing)?\b|\beng\b/i.test(String(s || ''));
+    const isEng = s => /\bCompE\b|\bEE?\b|\bChemE\b|\bMechE\b/i.test(String(s || ''));
     arr.sort((a, b) => {
       const ae = isEng(a[3]) ? 0 : 1;
       const be = isEng(b[3]) ? 0 : 1;
@@ -291,19 +291,17 @@ function updateMemberList(currentPage, data) {
   tbody.style.height = `${newHeight}px`;
 
   memberList.replaceChildren();
-  setTimeout(() => {
-    pageData.forEach(row => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td><a href="${row[0]}"><img src="${row[6]}"></a></td>
-          <td><a href="${row[0]}" target="_blank" rel="noopener noreferrer">${row[0].replace('https://', '')}</a></td>
-          <td>${row[2]}, ${row[1]}</td>
-          <td>${row[3]}</td>
-          <td>${row[4]}</td>
-          <td>${row[5]}</td>
-        `;
-        memberList.appendChild(tr);
-    }, 200);
+  pageData.forEach(row => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><a href="${row[0]}"><img src="${row[6]}"></a></td>
+      <td><a href="${row[0]}" target="_blank" rel="noopener noreferrer" class="none">${row[0].replace('https://', '')}</a></td>
+      <td>${row[2]}, ${row[1]}</td>
+      <td>${row[3]}</td>
+      <td>${row[4]}</td>
+      <td>${row[5]}</td>
+    `;
+    memberList.appendChild(tr);
   });
 
   const pageNumber = document.querySelector('.page-number');
