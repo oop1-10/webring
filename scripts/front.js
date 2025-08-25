@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const table = document.querySelector('.member-table');
   const theadRow = table.tHead ? table.tHead.rows[0] : table.querySelector('thead tr');
   const headers = Array.from(theadRow ? theadRow.cells : []);
-  const keyMap = [null, 'website', 'fname', 'lname', 'program', 'year', 'degree'];
+  const keyMap = [null, 'website', 'lname', 'program', 'year', 'degree']; // fixed: removed 'fname' to realign keys
 
   headers.forEach((th, idx) => {
     const key = keyMap[idx];
@@ -100,7 +100,7 @@ function getActiveSort() {
 }
 
 function sortArrayBy(base, key, state) {
-  const dir = state === 1 ? -1 : 1;
+  const dir = state === 1 ? 1 : -1;
   const arr = base.slice();
 
   if (key === 'website') {
@@ -112,23 +112,39 @@ function sortArrayBy(base, key, state) {
     return arr;
   }
 
-  if (key === 'fname' || key === 'lname') {
-    const idx = key === 'lname' ? 1 : 2;
-    arr.sort((a, b) =>
-      dir * String(a[idx] || '').toLowerCase().localeCompare(String(b[idx] || '').toLowerCase())
-    );
+  if (key === 'lname') {
+    arr.sort((a, b) => {
+      const lastCmp = String(a[2] || '').toLowerCase().localeCompare(String(b[2] || '').toLowerCase());
+      if (lastCmp) return dir * lastCmp;
+
+      const firstCmp = String(a[1] || '').toLowerCase().localeCompare(String(b[1] || '').toLowerCase());
+      if (firstCmp) return dir * firstCmp;
+
+      const ai = originalIndexMap.get(a);
+      const bi = originalIndexMap.get(b);
+      return ai - bi;
+    });
     return arr;
   }
 
   if (key === 'program') {
-    const isEng = s => /\bCompE\b|\bEE?\b|\bChemE\b|\bMechE\b/i.test(String(s || ''));
     arr.sort((a, b) => {
-      const ae = isEng(a[3]) ? 0 : 1;
-      const be = isEng(b[3]) ? 0 : 1;
-      if (ae !== be) return dir * (ae - be);
-      return dir * String(a[3] || '').toLowerCase().localeCompare(String(b[3] || '').toLowerCase());
+      const progA = String(a[3] || '').toLowerCase();
+      const progB = String(b[3] || '').toLowerCase();
+      if (progA !== progB) return dir * progA.localeCompare(progB);
+
+      const lastA = String(a[2] || '').toLowerCase();
+      const lastB = String(b[2] || '').toLowerCase();
+      if (lastA !== lastB) return dir * lastA.localeCompare(lastB);
+
+      const firstA = String(a[1] || '').toLowerCase();
+      const firstB = String(b[1] || '').toLowerCase();
+      if (firstA !== firstB) return dir * firstA.localeCompare(firstB);
+
+      const ai = originalIndexMap.get(a);
+      const bi = originalIndexMap.get(b);
+      return dir * (ai - bi);
     });
-    return arr;
   }
 
   if (key === 'year') {
@@ -136,6 +152,7 @@ function sortArrayBy(base, key, state) {
       const ay = parseInt(a[4], 10); const by = parseInt(b[4], 10);
       const av = Number.isNaN(ay) ? -Infinity : ay;
       const bv = Number.isNaN(by) ? -Infinity : by;
+      console.log(av, bv);
       return dir * (av - bv);
     });
     return arr;
